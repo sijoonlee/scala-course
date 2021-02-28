@@ -50,7 +50,7 @@ object PracticeList extends App{
     def flatMap[B](transformer: MyTransformer[A, MyListGeneric[B]]): MyListGeneric[B]
   }
 
-  object Empty extends MyListGeneric[Nothing]{
+  case object Empty extends MyListGeneric[Nothing]{
     override def head: Nothing = throw new NoSuchElementException
     override def tail: MyListGeneric[Nothing] = throw new NoSuchElementException
     override def isEmpty: Boolean = true
@@ -63,7 +63,7 @@ object PracticeList extends App{
 
   }
 
-  class Cons[+A](h:A, t:MyListGeneric[A]) extends MyListGeneric[A] {
+  case class Cons[+A](h:A, t:MyListGeneric[A]) extends MyListGeneric[A] {
     override def head: A = h
     override def tail: MyListGeneric[A] = t
     override def isEmpty: Boolean = false
