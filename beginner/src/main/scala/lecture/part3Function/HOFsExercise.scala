@@ -37,6 +37,7 @@ object HOFsExercise extends App{
     def foreach(f: A => Unit): Unit
     def sort(compare: (A,A) => Int): MyListGeneric[A]
     def zipWith[B,C](list:MyListGeneric[B], zip:(A, B) => C): MyListGeneric[C]
+    def fold[B](start:B)(operator:(B,A) => B): B
   }
 
   case object Empty extends MyListGeneric[Nothing]{
@@ -56,6 +57,7 @@ object HOFsExercise extends App{
     def zipWith[B, C](list:MyListGeneric[B], zip:(Nothing, B) => C): MyListGeneric[C] =
       if(!list.isEmpty) throw new RuntimeException("Lists do not have the same length")
       else Empty
+    def fold[B](start:B)(operator:(B, Nothing)=>B):B = start
   }
 
   case class Cons[+A](h:A, t:MyListGeneric[A]) extends MyListGeneric[A] {
@@ -94,6 +96,18 @@ object HOFsExercise extends App{
     def zipWith[B, C](list: MyListGeneric[B], zip: (A, B) => C): MyListGeneric[C] =
       if(list.isEmpty) throw new RuntimeException("Lists do not have the same length")
       else new Cons(zip(h, list.head), t.zipWith(list.tail, zip))
+
+    /*
+      [1,2,3].fold(0)(+) =
+        [2,3].fold(1)(+) =
+        [3].fold(3)(+) =
+        [].fold(6)(+) =
+        6
+     */
+    def fold[B](start:B)(operator:(B,A)=>B):B = {
+      val newStart = operator(start, h)
+      t.fold(newStart)(operator)
+    }
   }
 
   var listOfIntegers: MyListGeneric[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
@@ -101,6 +115,15 @@ object HOFsExercise extends App{
   listOfIntegers.foreach(println)
   println(listOfIntegers.sort( (x,y) => y-x ))
   println(listOfIntegers.zipWith[Int, Int](listOfIntegers2, _ + _))
+  println(listOfIntegers.fold(0)(_ + _))
+
+  // for-comprehension works when map/filter/flatMap are provided
+  val combinations = for {
+    n <- listOfIntegers
+    n2 <- listOfIntegers2
+  } yield "" + n + "-"+ n2
+
+  println(combinations) // [1-2 1-3 1-4 2-2 2-3 2-4 3-2 3-3 3-4]
 
   def toCurry(f: (Int, Int) => Int): (Int => Int => Int) =
     x => y => f(x, y)
