@@ -46,7 +46,7 @@ object TuplesAndMaps extends App{
    */
 
   def add(network: Map[String, Set[String]], person:String): Map[String, Set[String]] =
-    network + (person -> List())
+    network + (person -> Set())
 
   def friend(network: Map[String, Set[String]], a: String, b: String): Map[String, Set[String]] = {
     val friendsA = network(a)
