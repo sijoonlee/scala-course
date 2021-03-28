@@ -61,6 +61,6 @@ object PatternsEveryWhere extends App{
     case _ => "something else"
   }
   }
-  println(mappedList)
+  println(mappedList) // List(the one, 2 is even, something else, 4 is even)
 
 }

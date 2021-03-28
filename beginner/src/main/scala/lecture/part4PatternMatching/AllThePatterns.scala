@@ -61,8 +61,8 @@ object AllThePatterns extends App {
   //
   //  // 7 - name binding
   //  val nameBindingMatch = aList match {
-  //    case nonEmptyList @ Cons(_, _) => // name binding => use the name later(here)
-  //    case Cons(1, rest @ Cons(2, _)) => // name binding inside nested patterns
+  //    case nonEmptyList @ Cons(_, _) => // name binding => use the name 'nonEmptyList' later(here)
+  //    case Cons(1, rest @ Cons(2, _)) => // name binding 'rest' inside nested patterns
   //  }
   //
   //  // 8 - multi-patterns
@@ -90,5 +90,9 @@ object AllThePatterns extends App {
 
   println(numbersMatch)
   // JVM trick question
-
+  // --> a list of strings
+  // Why?
+  // Java 1 did not have Generic parameters, which was introduced into Java 5
+  // JVM is still compatible with Java 1
+  // Generic type is erased by compiler - ex) List[String] -> List
 }
